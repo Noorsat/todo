@@ -5,24 +5,20 @@ import {ToDoList} from "../components/ToDoList";
 export function ToDo() {
     const [todos, setTodos] = useState([])
 
-    useEffect(() => {
-        if(todos?.length){
-            localStorage.setItem('todos', JSON.stringify(todos))
-        }
-    }, [todos])
-
     useEffect(() => {   
-        const tasks = JSON.parse(localStorage.getItem('todos'));
-        if (todos){
-            setTodos(tasks);
+        if (localStorage.getItem('todos')){
+            const tasks = JSON.parse(localStorage.getItem('todos'));
+            if (tasks){
+                setTodos(tasks)
+            }
         }
     }, [])
 
     function handleCreate(text) {
         setTodos([...todos, text])
+        const arr = [...todos,text];
+        localStorage.setItem('todos', JSON.stringify(arr));
     }
-
-    console.log(todos);
 
     function handleRemove(index) {
         const newTodos = [...todos]
@@ -34,6 +30,6 @@ export function ToDo() {
         <div className="todo">
             <ToDoForm onCreate={handleCreate} />
             <ToDoList todos={todos} onRemove={handleRemove} />
-        </div>
+        </div> 
     )
 }
